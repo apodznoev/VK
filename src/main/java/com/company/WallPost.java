@@ -8,13 +8,13 @@ import java.util.Map;
  * @since 8 Apr 2016
  */
 public class WallPost {
-    private final long userId;
+    private final long ownerId;
     private final Map<String, Object> postData;
     private static final String POST_TYPE = "post";
     private static final String REPOST_TYPE = "copy";
 
-    public WallPost(long userId, Map<String, Object> postElements) {
-        this.userId = userId;
+    public WallPost(long ownerId, Map<String, Object> postElements) {
+        this.ownerId = ownerId;
         this.postData = postElements;
     }
 
@@ -25,16 +25,25 @@ public class WallPost {
     public long getAuthorId() {
         return (long) postData.get("from_id");
     }
+
     public long getPostTime() {
         return (long) postData.get("date");
     }
 
     public boolean isOriginalPost() {
-         return postData.get("post_type").equals(POST_TYPE);
+        return postData.get("post_type").equals(POST_TYPE);
     }
 
     public String getUserText() {
-        return postData.containsKey("copy_text") ? (String) postData.get("copy_text") : getOriginalText();
+        if(isOriginalPost()) {
+            return getOriginalText();
+        }
+
+        if(postData.containsKey("copy_text")) {
+            return (String) postData.get("copy_text");
+        }
+
+        return "";
     }
 
     public String getOriginalText() {
@@ -42,18 +51,18 @@ public class WallPost {
     }
 
     public int getCommentsCount() {
-        return (int) ((Map<String,Object>) postData.get("comments")).get("count");
+        return (int) ((Map<String, Object>) postData.get("comments")).get("count");
     }
 
     public int getLikesCount() {
-        return (int) ((Map<String,Object>) postData.get("likes")).get("count");
+        return (int) ((Map<String, Object>) postData.get("likes")).get("count");
     }
 
     public int getRepostsCount() {
-        return (int) ((Map<String,Object>) postData.get("reposts")).get("count");
+        return (int) ((Map<String, Object>) postData.get("reposts")).get("count");
     }
 
-    public List<Object> getAttachments(){
+    public List<Object> getAttachments() {
         return (List<Object>) postData.get("attachments");
     }
 
@@ -61,5 +70,4 @@ public class WallPost {
 //    signer_id - если запись была опубликована от имени группы и подписана пользователем, то в поле содержится идентификатор её автора
 //    copy_owner_id - если запись является копией записи с чужой стены, то в поле содержится идентификатор владельца стены у которого была скопирована запись
 //    copy_post_id - если запись является копией записи с чужой стены, то в поле содержится идентификатор скопированной записи на стене ее владельца
-//    copy_text
 }
