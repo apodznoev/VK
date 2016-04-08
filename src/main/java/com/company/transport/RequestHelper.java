@@ -1,4 +1,4 @@
-package com.company;
+package com.company.transport;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpEntity;

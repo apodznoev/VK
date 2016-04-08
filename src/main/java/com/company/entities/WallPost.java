@@ -1,4 +1,6 @@
-package com.company;
+package com.company.entities;
+
+import com.company.Util;
 
 import java.util.List;
 import java.util.Map;
@@ -19,15 +21,15 @@ public class WallPost {
     }
 
     public long getPostId() {
-        return (long) postData.get("id");
+        return Util.getLong(postData,"id");
     }
 
     public long getAuthorId() {
-        return (long) postData.get("from_id");
+        return  Util.getLong(postData,"from_id");
     }
 
     public long getPostTime() {
-        return (long) postData.get("date");
+        return Util.getLong(postData,"date");
     }
 
     public boolean isOriginalPost() {
